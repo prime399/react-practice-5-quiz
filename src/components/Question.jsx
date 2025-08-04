@@ -12,6 +12,8 @@ export default function Question({
   // Calculate progress percentage
   const progress = ((QuestionIndex + 1) / numQue) * 100;
 
+  console.log(question);
+
   return (
     <div className="flex flex-col">
       <h4 className="font-bold text-center">{question.question}</h4>

@@ -8,6 +8,7 @@ import Question from "./components/Question";
 import NextButton from "./components/NextButton";
 import PrevQuestion from "./components/PrevQuestion";
 import FinishScr from "./components/FinishScr";
+import Timer from "./components/Timer";
 
 const initialState = {
   questions: [],
@@ -16,6 +17,7 @@ const initialState = {
   QuestionIndex: 0,
   answer: null,
   points: 0,
+  secondsRemaining: 200,
 };
 
 function reducer(state, action) {
@@ -50,6 +52,12 @@ function reducer(state, action) {
       return { ...state, QuestionIndex: state.QuestionIndex-- };
     case "finish":
       return { ...state, status: "finished" };
+    case "tick":
+      return {
+        ...state,
+        secondsRemaining: state.secondsRemaining - 1,
+        status: state.secondsRemaining === 0 ? "finished" : state.status,
+      };
     default:
       throw new Error("Unknown Event Received!");
   }
@@ -58,7 +66,8 @@ function reducer(state, action) {
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const { questions, status, QuestionIndex, answer, points } = state;
+  const { questions, status, QuestionIndex, answer, points, secondsRemaining } =
+    state;
 
   const numQue = questions.length;
   const maxPossiblePoints = questions.reduce(
@@ -120,6 +129,8 @@ function App() {
                   QuestionIndex={QuestionIndex}
                 />
               )}
+
+              <Timer dispatch={dispatch} secondsRemaining={secondsRemaining} />
             </>
           )}
 
