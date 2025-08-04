@@ -7,6 +7,7 @@ import StartScreen from "./components/StartScreen";
 import Question from "./components/Question";
 import NextButton from "./components/NextButton";
 import PrevQuestion from "./components/PrevQuestion";
+import FinishScr from "./components/FinishScr";
 
 const initialState = {
   questions: [],
@@ -47,6 +48,8 @@ function reducer(state, action) {
 
     case "prevQuestion":
       return { ...state, QuestionIndex: state.QuestionIndex-- };
+    case "finish":
+      return { ...state, status: "finished" };
     default:
       throw new Error("Unknown Event Received!");
   }
@@ -104,7 +107,12 @@ function App() {
                 QuestionIndex={QuestionIndex}
                 numQue={numQue}
               />
-              <NextButton dispatch={dispatch} answer={answer} />
+              <NextButton
+                dispatch={dispatch}
+                answer={answer}
+                QuestionIndex={QuestionIndex}
+                numQue={numQue}
+              />
 
               {QuestionIndex >= 1 && (
                 <PrevQuestion
@@ -112,6 +120,12 @@ function App() {
                   QuestionIndex={QuestionIndex}
                 />
               )}
+            </>
+          )}
+
+          {status === "finished" && (
+            <>
+              <FinishScr />
             </>
           )}
         </div>
